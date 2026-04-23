@@ -6,9 +6,8 @@ export class ProjectController {
 
     static createProject = async (req: Request, res: Response, next: NextFunction) => {
         
-        const project = new Project(req.body)  //este "new Project()" es de mongoose   como de sequelize era "Product.create()"
-
-        project.manager = req.user._id //esto lo haces gracias a que añadiste user a req en express.d.ts
+        const project = new Project(req.body)  
+        project.manager = req.user._id 
         try {
             await project.save()
             res.send('Proyecto creado')

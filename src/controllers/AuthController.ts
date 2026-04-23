@@ -9,6 +9,7 @@ import { generateJWT } from '../utils/jwt'
 
 export class AuthController {
     static createAccount = async (req: Request, res: Response, next: NextFunction) => {
+
         const { password, email } = req.body
 
         try {
@@ -28,16 +29,23 @@ export class AuthController {
             token.token = generateToken()
             token.user = user._id
 
-            AuthEmail.sendConfirmationEmail({
-                email: user.email,
-                name: user.name,
-                token: token.token
-            })
-
             await Promise.all([user.save(), token.save()])
+
+            try {
+                await AuthEmail.sendConfirmationEmail({
+                    email: user.email,
+                    name: user.name,
+                    token: token.token
+                })
+            } catch (emailError) {
+                console.error(`Error enviando email: ${emailError}`)
+            }
+
+
+           
             res.send('Cuenta creada, revisa tu email para confirmarla')
-        } catch (error) { 
-            next(error) 
+        } catch (error) {
+            next(error)
         }
     }
 
@@ -70,8 +78,10 @@ export class AuthController {
 
     static login = async (req: Request, res: Response, next: NextFunction) => {
         const { email, password } = req.body
+
         try {
             const user = await User.findOne({ email })
+
             if (!user) {
                 return next({
                     status: 404,
@@ -225,7 +235,7 @@ export class AuthController {
         const { name, email } = req.body
         try {
             const userExists = await User.findOne({ email })
-            if (userExists && userExists._id.toString() != req.user._id.toString()) { //comprobar que no es el propio mail de quien hace la llamada
+            if (userExists && userExists._id.toString() != req.user._id.toString()) { 
                 return next({
                     status: 409,
                     message: 'El email indicado ya está registrado'
@@ -249,9 +259,8 @@ export class AuthController {
             const user = await User.findById(req.user._id)
 
             const isPasswordCorrect = await checkPassword(current_password, user!.password)
-            console.log(isPasswordCorrect);
             if (!isPasswordCorrect) {
-                  return next({
+                return next({
                     status: 401,
                     message: 'La contraseña actual no es correcta'
                 })
@@ -275,7 +284,7 @@ export class AuthController {
 
             const isPasswordCorrect = await checkPassword(password, user!.password)
             if (!isPasswordCorrect) {
-                  return next({
+                return next({
                     status: 401,
                     message: 'La contraseña actual no es correcta'
                 })

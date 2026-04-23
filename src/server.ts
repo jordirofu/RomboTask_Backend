@@ -14,8 +14,6 @@ connectDB();
 
 export const app = express()
 
-
-
 app.use(morgan('dev'))
 
 app.use(cors(corsConfig));

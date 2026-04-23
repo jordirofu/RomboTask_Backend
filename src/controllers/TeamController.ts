@@ -8,7 +8,7 @@ export class TeamMemberController {
 
         const { email } = req.body
         try {
-            const user = await User.findOne({ email }).select('_id name email') //no queremos traer pwd, etc. Y es más rápido
+            const user = await User.findOne({ email }).select('_id name email')
             if (!user) {
                 return next({
                     status: 404,
@@ -85,9 +85,7 @@ export class TeamMemberController {
     }
 
     static getMembersByProject = async (req: Request, res: Response, next: NextFunction) => {
-        //res.json(req.project.team) Si solo quisieras los ids
         try {
-            //const project = await Project.findById(req.project.id).populate('team') //Así traería todo, incluso los pwd de los members
             const project = await Project.findById(req.project.id).populate({
                 path: 'team',
                 select: 'id email name'

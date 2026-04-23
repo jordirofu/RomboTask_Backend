@@ -36,7 +36,7 @@ export class TaskController {
         try {
             const task = await Task.findById(req.task._id)
                 .populate({ path: 'statusModifiedBy.user', select: 'id name email' })
-                .populate({         //Ejemplo de POPULATE ANIDADO
+                .populate({         
                     path: 'notes',
                     populate: {
                         path: 'createdBy',
