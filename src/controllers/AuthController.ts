@@ -102,7 +102,7 @@ export class AuthController {
                 })
                 return next({
                     status: 401,
-                    message: 'La cuenta aún no ha sido confirmada, hemos enviado un nuevo email de confirmación'
+                    message: 'La cuenta aún no ha sido confirmada, hemos enviado un nuevo email de confirmación (revisa SPAM)'
                 })
             }
 
@@ -176,7 +176,7 @@ export class AuthController {
             })
 
             await token.save()
-            res.send('Enviado email con instrucciones')
+            res.send('Enviado email con instrucciones (revisa SPAM)')
         } catch (error) {
             next(error)
         }
