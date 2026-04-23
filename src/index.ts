@@ -15,7 +15,7 @@ async function startApp() {
     } catch (error) {
         if (error instanceof Error) {
             console.error(colors.red.bold('Error al iniciar el servidor:'))
-            console.error(colors.red(error.message)) // Aquí ya puedes leer el mensaje
+            console.error(colors.red(error.message))
         } else {
             console.error(colors.red.bold('Ocurrió un error desconocido'))
         }
