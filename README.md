@@ -51,6 +51,7 @@ https://rombotaskbackend-production.up.railway.app
 - Token validation and user verification
 
 ## Project Structure
+```text
 src
 ├── config              # CORS, DB, and Nodemailer configuration
 ├── controllers         # Auth, Project, Task, Team, and Note controllers
@@ -65,6 +66,7 @@ src
 ├── utils               # Helper functions
 ├── server.ts           # Server entry point
 └── index.ts            # App initialization
+```
 
 ## Installation
 
